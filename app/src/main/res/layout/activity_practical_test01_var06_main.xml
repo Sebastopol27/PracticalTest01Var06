@@ -44,7 +44,6 @@
 
     </LinearLayout>
 
-    <!-- Rândul 2: checkbox-urile corespunzătoare -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -76,7 +75,6 @@
 
     </LinearLayout>
 
-    <!-- Rândul 3: butoanele centrate împreună -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
