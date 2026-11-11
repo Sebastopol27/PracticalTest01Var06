@@ -1,5 +1,6 @@
 package ro.pub.cs.systems.eim.practicaltest01var06
 
+import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
@@ -7,11 +8,37 @@ import android.widget.CheckBox
 import android.widget.EditText
 import android.widget.Toast
 import androidx.activity.ComponentActivity
+import androidx.activity.result.contract.ActivityResultContracts
 
 class PracticalTest01Var06MainActivity : ComponentActivity() {
 
+    private var score = 0
+
+    private val secondaryActivityLauncher =
+        registerForActivityResult(
+            ActivityResultContracts.StartActivityForResult()
+        ) { result ->
+            if (result.resultCode == Activity.RESULT_OK) {
+                val gain = result.data?.getIntExtra(
+                    PracticalTest01Var06SecondaryActivity.EXTRA_GAIN,
+                    0
+                ) ?: 0
+
+                score += gain
+
+                Toast.makeText(
+                    this,
+                    "Scor: $score",
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
+        }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        score = savedInstanceState?.getInt(KEY_SCORE, 0) ?: 0
+
         setContentView(R.layout.activity_practical_test01_var06_main)
 
         val number1 = findViewById<EditText>(R.id.number1)
@@ -68,7 +95,16 @@ class PracticalTest01Var06MainActivity : ComponentActivity() {
                 )
             }
 
-            startActivity(intent)
+            secondaryActivityLauncher.launch(intent)
         }
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        outState.putInt(KEY_SCORE, score)
+        super.onSaveInstanceState(outState)
+    }
+
+    companion object {
+        private const val KEY_SCORE = "score"
     }
 }
