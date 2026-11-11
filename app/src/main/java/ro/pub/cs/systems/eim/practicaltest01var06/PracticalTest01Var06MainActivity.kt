@@ -1,5 +1,6 @@
 package ro.pub.cs.systems.eim.practicaltest01var06
 
+import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
 import android.widget.CheckBox
@@ -21,27 +22,53 @@ class PracticalTest01Var06MainActivity : ComponentActivity() {
         val checkNumber2 = findViewById<CheckBox>(R.id.checkNumber2)
         val checkNumber3 = findViewById<CheckBox>(R.id.checkNumber3)
 
+        val playButton = findViewById<Button>(R.id.playButton)
         val randomButton = findViewById<Button>(R.id.randomButton)
 
         randomButton.setOnClickListener {
             val options = listOf("1", "2", "3", "*")
 
-            if (!checkNumber1.isChecked) {
-                number1.setText(options.random())
+            if (!checkNumber1.isChecked) number1.setText(options.random())
+            if (!checkNumber2.isChecked) number2.setText(options.random())
+            if (!checkNumber3.isChecked) number3.setText(options.random())
+
+            Toast.makeText(
+                this,
+                "${number1.text} | ${number2.text} | ${number3.text}",
+                Toast.LENGTH_SHORT
+            ).show()
+        }
+
+        playButton.setOnClickListener {
+            val checkedCount = listOf(
+                checkNumber1,
+                checkNumber2,
+                checkNumber3
+            ).count { it.isChecked }
+
+            val intent = Intent(
+                this,
+                PracticalTest01Var06SecondaryActivity::class.java
+            ).apply {
+                putExtra(
+                    PracticalTest01Var06SecondaryActivity.EXTRA_NUMBER_1,
+                    number1.text.toString()
+                )
+                putExtra(
+                    PracticalTest01Var06SecondaryActivity.EXTRA_NUMBER_2,
+                    number2.text.toString()
+                )
+                putExtra(
+                    PracticalTest01Var06SecondaryActivity.EXTRA_NUMBER_3,
+                    number3.text.toString()
+                )
+                putExtra(
+                    PracticalTest01Var06SecondaryActivity.EXTRA_CHECKED_COUNT,
+                    checkedCount
+                )
             }
 
-            if (!checkNumber2.isChecked) {
-                number2.setText(options.random())
-            }
-
-            if (!checkNumber3.isChecked) {
-                number3.setText(options.random())
-            }
-
-            val result =
-                "${number1.text} | ${number2.text} | ${number3.text}"
-
-            Toast.makeText(this, result, Toast.LENGTH_SHORT).show()
+            startActivity(intent)
         }
     }
 }
