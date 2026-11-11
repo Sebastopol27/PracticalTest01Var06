@@ -13,6 +13,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 class PracticalTest01Var06MainActivity : ComponentActivity() {
 
     private var score = 0
+    private var serviceHasBeenStarted = false
 
     private val secondaryActivityLauncher =
         registerForActivityResult(
@@ -31,6 +32,8 @@ class PracticalTest01Var06MainActivity : ComponentActivity() {
                     "Scor: $score",
                     Toast.LENGTH_SHORT
                 ).show()
+
+                notifyServiceIfNeeded()
             }
         }
 
@@ -99,9 +102,32 @@ class PracticalTest01Var06MainActivity : ComponentActivity() {
         }
     }
 
+    private fun notifyServiceIfNeeded() {
+        if (score <= 0) return
+
+        if (!serviceHasBeenStarted || score > 100) {
+            val serviceIntent = Intent(
+                this,
+                PracticalTest01Var06Service::class.java
+            ).apply {
+                putExtra(PracticalTest01Var06Service.EXTRA_SCORE, score)
+            }
+
+            startService(serviceIntent)
+            serviceHasBeenStarted = true
+        }
+    }
+
     override fun onSaveInstanceState(outState: Bundle) {
         outState.putInt(KEY_SCORE, score)
         super.onSaveInstanceState(outState)
+    }
+
+    override fun onDestroy() {
+        stopService(
+            Intent(this, PracticalTest01Var06Service::class.java)
+        )
+        super.onDestroy()
     }
 
     companion object {

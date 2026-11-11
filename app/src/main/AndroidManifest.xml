@@ -26,6 +26,9 @@
         <activity
             android:name=".PracticalTest01Var06SecondaryActivity"
             android:exported="false" />
+        <service
+            android:name=".PracticalTest01Var06Service"
+            android:exported="false" />
     </application>
 
 </manifest>
