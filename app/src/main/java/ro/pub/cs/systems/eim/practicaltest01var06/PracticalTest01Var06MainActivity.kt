@@ -14,6 +14,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import ro.pub.cs.systems.eim.practicaltest01var06.ui.theme.PracticalTest01Var06Theme
 
 class PracticalTest01Var06MainActivity : ComponentActivity() {
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_practical_test01_var06_main)
